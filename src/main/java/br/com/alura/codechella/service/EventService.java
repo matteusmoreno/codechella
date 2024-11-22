@@ -7,6 +7,7 @@ import br.com.alura.codechella.repository.EventRepository;
 import br.com.alura.codechella.request.CreateEventRequest;
 import br.com.alura.codechella.request.UpdateEventRequest;
 import br.com.alura.codechella.response.EventDetailsResponse;
+import br.com.alura.codechella.translation.Translation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -74,4 +75,9 @@ public class EventService {
         }
     }
 
+    public Mono<String> getTranslation(Long id, String language) {
+        return eventRepository.findById(id)
+                .switchIfEmpty(Mono.error(new EventNotFoundException()))
+                .flatMap(e -> Translation.getTranslatedTextMyMemoryApi(e.getDescription(), language));
+    }
 }

@@ -42,6 +42,11 @@ public class EventController {
         return eventService.findEventById(id);
     }
 
+    @GetMapping("/{id}/translate/{language}")
+    public Mono<String> translateText(@PathVariable Long id, @PathVariable String language) {
+        return eventService.getTranslation(id, language);
+    }
+
     @PutMapping
     public Mono<Event> update(@RequestBody UpdateEventRequest request) {
         return eventService.updateEvent(request);
